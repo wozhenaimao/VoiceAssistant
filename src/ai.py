@@ -9,7 +9,6 @@ import subprocess
 
 load_dotenv()
 
-talking = False
 client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
 messageHistory = [
     {
@@ -48,8 +47,6 @@ def _say(text: str) -> None:
 
 
 def answer(audio: AudioData = None, text: str = None) -> None:
-    
-    global talking
 
     if audio:
         with open("talk.wav", "wb") as file:
@@ -65,15 +62,6 @@ def answer(audio: AudioData = None, text: str = None) -> None:
 
     messageHistory.append({'role': 'user', 'content': userSaid})
     print('User said:', userSaid)
-
-    if talking:
-        if 'thank' in userSaid.lower():
-            talking = False
-    else:
-        if 'assistant' in userSaid.lower():
-            talking = True
-        else:
-            return
     
     clear_temp_dir()
 
